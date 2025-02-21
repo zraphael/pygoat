@@ -19,7 +19,6 @@ from xml.sax import make_parser
 from xml.sax.handler import feature_external_ges
 
 import jwt
-import requests
 import yaml
 from argon2 import PasswordHasher
 from django.contrib import messages
@@ -38,6 +37,7 @@ from .forms import NewUserForm
 from .models import (FAANG, AF_admin, AF_session_id, Blogs, CF_user, authLogin,
                      comments, info, login, otp, sql_lab_table, tickits)
 from .utility import customHash, filter_blog
+from security import safe_requests
 
 #*****************************************Lab Requirements****************************************************#
 
@@ -953,7 +953,7 @@ def ssrf_lab2(request):
     elif request.method == "POST":
         url = request.POST["url"]
         try:
-            response = requests.get(url)
+            response = safe_requests.get(url)
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
         except:
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
